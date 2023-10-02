@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Test Task{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        <link href="web/css/bootstrap.min.css?1123" rel="stylesheet" type="text/css"/>
+        <link href="web/css/select2.css?1123211" rel="stylesheet" type="text/css"/>
+        <style>
+            .body {
+                margin: 20px 20px;
+                background-image: url("web/pics/V_aeroportu.webp");
+                background-repeat: no-repeat;
+                background-size: inherit;
+                background-position: top 20px right 20px;
+            }
+
+            html, body {
+                height: 100%;
+                background-color: black;
+            }
+            .body {
+                padding: 30px;
+                margin: 50px;
+                background-color: azure;
+                height: 100%;
+            }
+            .form-control {
+                display: block;
+                width: 100%;
+                height: 34px;
+                padding: 6px 12px;
+                font-size: 14px;
+                line-height: 1.42857143;
+                color: #555;
+                background-color: #fff;
+                background-image: none;
+                border: 1px solid #eaeaea;
+                border-radius: 0px;
+                box-shadow: none;
+            }
+            .fog-block {
+                color: rgb(143, 143, 143);
+            }
+            input.fog {
+                width: 1.3em;
+                height: 1.3em;
+                background-color: white;
+                border-radius: 50%;
+                vertical-align: middle;
+                border: 1px solid #ddd;
+                appearance: none;
+                -webkit-appearance: none;
+                outline: none;
+                cursor: pointer;
+            }
+
+            input.fog:checked {
+                background-color: gray;
+            }
+
+            .fog-label {
+                height: 20px;
+                margin: -19px 40px;
+                display: table;
+            }
+
+            .loader-cover.container-loader .css-loader-circle {
+                border: 5px solid #fff;
+            }
+
+            .css-loader-circle {
+                z-index: 2;
+                border-radius: 40px;
+                height: 40px;
+                left: 50%;
+                margin: -20px 0 0 -20px;
+                opacity: 0;
+                position: absolute;
+                top: 50%;
+                width: 40px;
+                animation: pulsate 1s ease-out;
+                animation-iteration-count: infinite;
+            }
+
+            .loader-cover.container-loader {
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 99998;
+                position: fixed;
+            }
+            .loader-cover {
+                width: 100%;
+                height: 100%;
+                z-index: 6;
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+            @keyframes pulsate {
+                0% {
+                    transform: scale(.1);
+                    opacity: 0.0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(1.2);
+                    opacity: 0;
+                }
+            }
+            .js-alert {
+                display: none;
+                text-align: center;
+                margin: 15px 0;
+                padding: 15px;
+                color: #7B243E;
+                border: 1px solid #7B243E;
+                border-radius: 4px;
+                background-color: antiquewhite;
+            }
+            .js-check-result {
+                display: none;
+                margin: 15px 0;
+                padding: 15px;
+                color: #0c5460;
+                border: 1px solid #0c5460;
+                border-radius: 4px;
+                background-color: cornsilk;
+            }
+            .delay-info {
+                color: #721c24;
+            }
+            .compensation-success {
+                color: #1c7430;
+            }
+
+            .preview {
+                line-height: 30px;
+                color: #10488D;
+                max-width: 660px;
+            }
+
+            .preview-main-block {
+                height: 100px;
+                /*height: 200px;*/
+            }
+            .margin-b-10 {
+                margin-bottom: 10px;
+            }
+            .margin-t-15 {
+                padding-top: 15px;
+            }
+        </style>
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+        <script src="web/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+        <script src="web/js/select2.min.js?1462908796" type="text/javascript"></script>
+    </head>
+    <body>
+        {% block body %}
+            <div class="js-response-loader loader-cover container-loader" id="loader" style="display: none;">
+                <div class="css-loader-circle"></div>
+            </div>
+            <div class="body">
+
+                <div class="preview-main-block margin-b-10">
+                    <h1 class="preview">Your flight was delayed or cancelled?</h1>
+                    <h3 class="preview">Receive up to €600 compensation for a problem flight. We'll help you get the recovery you deserve.</h3>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5 margin-b-10">
+                        <h4 class="preview">
+                            Here you can check the possibility of compensation for the problem flight
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-2">
+                        <input class="js-airport " name="airport" placeholder="Departure Airport" type="text">
+                    </div>
+
+                    <div class="col-sm-2">
+                        <select class="js-flight" type="text" placeholder="Select Flight..." name="flight">
+                            <option></option>
+                            {% for flight in flights %}
+                                <option value="{{ flight }}">Flight {{ flight }}</option>
+                            {% endfor%}
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row margin-t-15">
+                    <div class="col-sm-2">
+                        <input class="js-delay form-control" name="delay" placeholder="What was the delay?" type="number" min="0">
+                    </div>
+
+                    <div class="col-sm-2 fog-block">
+                        <input class="fog js-fog" id="fog" type="checkbox" name="fog">
+                        <div class="fog-label"><label for="fog">Was there fog?</label></div>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary js-check">Check Flight</button>
+                    </div>
+                </div>
+                <div class="row margin-t-15">
+                    <div class="col-sm-5">
+                        <div class="js-alert">Airport and Flight are required!!!</div>
+                        <div class="js-check-result"></div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function() {
+                    $('.js-flight').select2();
+
+                    $('.js-delay').on('change', function () {
+                        if ($(this).val() < 0) {
+                            $(this).val(0);
+                        }
+                    });
+
+                    $('.js-check').on('click', function () {
+                        $('.js-alert, .js-check-result').hide();
+                        // $('.js-check-result').html(response).show()
+                        let
+                            airport = $('.js-airport').select2('val'),
+                            flight  = $('.js-flight').select2('val'),
+                            delay   = $('.js-delay').val(),
+                            fog     = $('.js-fog').is(":checked") ? 1 : 0
+                        ;
+
+                        if (!airport || !flight) {
+                            $('.js-alert').show();
+                            return false;
+                        }
+
+                        $('.js-check').addClass('disabled');
+                        $('.js-response-loader').show();
+
+                        $.ajax({
+                            url: '{{ path('check_flights_ajax') }}',
+                            type: 'POST',
+                            data: {
+                                airport: airport,
+                                flight:  flight,
+                                delay:   delay,
+                                fog:     fog,
+                            },
+                            success: function (response) {
+                                $('.js-response-loader').hide();
+
+                                $('.js-check-result').html(response).show();
+
+
+                                $('.js-check').removeClass('disabled');
+                            }
+                        });
+                    });
+
+                    let $select = $('.js-airport');
+                    $select.select2('destroy');
+                    $select.select2({
+                        multiple: false,
+                        minimumInputLength: 2,
+                        initSelection: function (element, callback) {
+                            callback(app.variables.tagsList);
+                        },
+                        ajax: {
+                            url: '{{ path('airport_list_ajax') }}',
+                            dataType: 'json',
+                            type: "POST",
+                            data: function (term/*, page*/) {
+                                return {
+                                    term: term, // search term
+                                };
+                            },
+                            results: function (data/*, page*/) {
+                                return {results: data};
+                            },
+                        },
+                        formatResult: function (data/*, term*/) {
+                            return data.text;
+                        },
+                        formatSelection: function (data) {
+                            return data.text;
+                        },
+                        tokenSeparators: [',', ' '],
+                        createSearchChoice: function(term, data) {
+                            if ($(data).filter(function() {
+                                return this.text.toUpperCase().indexOf(term.toUpperCase()) >= 0;
+                            }).length === 0) {
+                                return {
+                                    id: term,
+                                    text: term
+                                };
+                            }
+                        }
+                    });
+                });
+            </script>
+
+        {% endblock %}
+    </body>
+</html>
