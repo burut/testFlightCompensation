@@ -47,7 +47,7 @@ class FlightsController extends AbstractController
         $delay = $request->request->getInt('delay');
         $fog = $request->request->getBoolean('fog');
 
-        sleep(1);
+        sleep(1); // for have possibility to see 'loader' in browser
 
         return new JsonResponse($this->flightsManager->checkFlight($airport, $flight, $delay, $fog));
     }
